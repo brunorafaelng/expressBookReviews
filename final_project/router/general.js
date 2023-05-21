@@ -4,6 +4,7 @@ let isValid = require('./auth_users.js').isValid;
 let users = require('./auth_users.js').users;
 const public_users = express.Router();
 
+//Task 10 - Promise
 const promiseGetBooks = () => {
   return new Promise((resolve, reject) => {
     if (!books) {
@@ -14,6 +15,7 @@ const promiseGetBooks = () => {
   });
 };
 
+//Task 11 - Promise
 const promiseGetBook = (isbn) => {
   return new Promise((resolve, reject) => {
     const book = books[isbn];
@@ -25,6 +27,7 @@ const promiseGetBook = (isbn) => {
   });
 };
 
+//Task 12 - Promise
 const promiseGetBooksByAuthor = (author) => {
   return new Promise((resolve, reject) => {
     const booksByAuthor = Object.values(books).filter(
@@ -38,6 +41,7 @@ const promiseGetBooksByAuthor = (author) => {
   });
 };
 
+//Task 13 - Promise
 const promiseGetBooksByTitle = (title) => {
   return new Promise((resolve, reject) => {
     const booksByTitle = Object.values(books).filter(
