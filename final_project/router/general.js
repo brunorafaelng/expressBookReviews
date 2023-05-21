@@ -4,6 +4,17 @@ let isValid = require('./auth_users.js').isValid;
 let users = require('./auth_users.js').users;
 const public_users = express.Router();
 
+const asyncGetBook = (isbn) => {
+  return new Promise((resolve, reject) => {
+    const book = books[isbn];
+    if (!book) {
+      reject({ message: 'Book not found' });
+    } else {
+      resolve(book);
+    }
+  });
+};
+
 // Tarefa 6: Registro de novos usuários
 public_users.post('/register', (req, res) => {
   const username = req.query.username;
@@ -25,25 +36,20 @@ public_users.post('/register', (req, res) => {
   res.status(200).send(`The user ${username} has been added!`);
 });
 
-// Tarefa 1: Obter a lista de livros disponíveis na loja
+// Tarefa 10: Obter a lista de livros disponíveis na loja
 public_users.get('/', function (req, res) {
-  // res.send(JSON.stringify(books, null, 4));
   // res.send({ books });
   res.send({ users });
-  // res.send({ books: books, users: users });
 });
 
-// Tarefa 2: Obter detalhes do livro com base no ISBN
+// Tarefa 11: Obter detalhes do livro com base no ISBN
 public_users.get('/isbn/:isbn', function (req, res) {
-  const isbn = req.params.isbn;
-  const book = books[isbn];
-  if (!book) {
-    return res.status(404).json({ message: 'Book not found' });
-  }
-  res.send(JSON.stringify(book, null, 4));
+  asyncGetBook(req.params.isbn)
+    .then((book) => res.send(JSON.stringify(book, null, 4)))
+    .catch((error) => res.status(404).json(error));
 });
 
-// Tarefa 3: Obter detalhes do livro com base no autor
+// Tarefa 12: Obter detalhes do livro com base no autor
 public_users.get('/author/:author', function (req, res) {
   const author = req.params.author;
   const booksByAuthor = Object.values(books).filter(
@@ -55,7 +61,7 @@ public_users.get('/author/:author', function (req, res) {
   res.send(JSON.stringify(booksByAuthor, null, 4));
 });
 
-// Tarefa 4: Obter todos os livros com base no título
+// Tarefa 13: Obter todos os livros com base no título
 public_users.get('/title/:title', function (req, res) {
   const title = req.params.title;
   const booksByTitle = Object.values(books).filter(
@@ -69,13 +75,9 @@ public_users.get('/title/:title', function (req, res) {
 
 // Tarefa 5: Obter a revisão do livro
 public_users.get('/review/:isbn', function (req, res) {
-  const isbn = req.params.isbn;
-  const book = books[isbn];
-  if (!book) {
-    return res.status(404).json({ message: 'Book not found' });
-  }
-  const reviews = book.reviews;
-  res.send(JSON.stringify(reviews, null, 4));
+  asyncGetBook(req.params.isbn)
+    .then((book) => res.send(JSON.stringify(book.reviews, null, 4)))
+    .catch((error) => res.status(404).json(error));
 });
 
 module.exports.general = public_users;

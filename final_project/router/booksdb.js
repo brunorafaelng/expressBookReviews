@@ -6,9 +6,9 @@ let books = {
   5: {
     author: 'Unknown',
     title: 'The Book Of Job',
-    reviews: [
-      'This is a test review for the Final Project of Node.js and Express.js using Postman.',
-    ],
+    reviews: {
+      Rafa: 'This is a test review for the Final Project of Node.js and Express.js using Postman.',
+    },
   },
   6: { author: 'Unknown', title: 'One Thousand and One Nights', reviews: {} },
   7: { author: 'Unknown', title: "Nj\u00e1l's Saga", reviews: {} },
