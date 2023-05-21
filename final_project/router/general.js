@@ -4,7 +4,7 @@ let isValid = require('./auth_users.js').isValid;
 let users = require('./auth_users.js').users;
 const public_users = express.Router();
 
-const asyncGetBooks = () => {
+const promiseGetBooks = () => {
   return new Promise((resolve, reject) => {
     if (!books) {
       reject({ message: 'No books found' });
@@ -14,7 +14,7 @@ const asyncGetBooks = () => {
   });
 };
 
-const asyncGetBook = (isbn) => {
+const promiseGetBook = (isbn) => {
   return new Promise((resolve, reject) => {
     const book = books[isbn];
     if (!book) {
@@ -25,7 +25,7 @@ const asyncGetBook = (isbn) => {
   });
 };
 
-const asyncGetBooksByAuthor = (author) => {
+const promiseGetBooksByAuthor = (author) => {
   return new Promise((resolve, reject) => {
     const booksByAuthor = Object.values(books).filter(
       (book) => book.author === author
@@ -38,7 +38,7 @@ const asyncGetBooksByAuthor = (author) => {
   });
 };
 
-const asyncGetBooksByTitle = (title) => {
+const promiseGetBooksByTitle = (title) => {
   return new Promise((resolve, reject) => {
     const booksByTitle = Object.values(books).filter(
       (book) => book.title === title
@@ -72,30 +72,30 @@ public_users.post('/register', (req, res) => {
   res.status(200).send(`The user ${username} has been added!`);
 });
 
-// Tarefa 10: Obter a lista de livros disponíveis na loja
+// Tarefa 10 - Promise: Obter a lista de livros disponíveis na loja
 public_users.get('/', function (req, res) {
-  asyncGetBooks()
+  promiseGetBooks()
     .then((books) => res.send({ books }))
     .catch((error) => res.status(404).json(error));
 });
 
-// Tarefa 11: Obter detalhes do livro com base no ISBN
+// Tarefa 11 - Promise: Obter detalhes do livro com base no ISBN
 public_users.get('/isbn/:isbn', function (req, res) {
-  asyncGetBook(req.params.isbn)
+  promiseGetBook(req.params.isbn)
     .then((book) => res.send(JSON.stringify(book, null, 4)))
     .catch((error) => res.status(404).json(error));
 });
 
-// Tarefa 12: Obter detalhes do livro com base no autor
+// Tarefa 12 - Promise: Obter detalhes do livro com base no autor
 public_users.get('/author/:author', function (req, res) {
-  asyncGetBooksByAuthor(req.params.author)
+  promiseGetBooksByAuthor(req.params.author)
     .then((books) => res.send(JSON.stringify(books, null, 4)))
     .catch((error) => res.status(404).json(error));
 });
 
-// Tarefa 13: Obter todos os livros com base no título
+// Tarefa 13 - Promise: Obter todos os livros com base no título
 public_users.get('/title/:title', function (req, res) {
-  asyncGetBooksByTitle(req.params.title)
+  promiseGetBooksByTitle(req.params.title)
     .then((books) => res.send(JSON.stringify(books, null, 4)))
     .catch((error) => res.status(404).json(error));
 });
@@ -110,3 +110,5 @@ public_users.get('/review/:isbn', function (req, res) {
   const reviews = book.reviews;
   res.send(JSON.stringify(reviews, null, 4));
 });
+
+module.exports.general = public_users;
