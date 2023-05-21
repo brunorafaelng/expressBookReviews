@@ -51,7 +51,7 @@ const promiseGetBooksByTitle = (title) => {
   });
 };
 
-// Tarefa 6: Registro de novos usuários
+// Task 6: Complete the code for registering a new user
 public_users.post('/register', (req, res) => {
   const username = req.query.username;
   const password = req.query.password;
@@ -72,35 +72,51 @@ public_users.post('/register', (req, res) => {
   res.status(200).send(`The user ${username} has been added!`);
 });
 
-// Tarefa 10 - Promise: Obter a lista de livros disponíveis na loja
+/*
+Task 10.
+Add the code for getting the list of books available in the shop
+(done in Task 1) using Promise callbacks or async-await with Axios.
+*/
 public_users.get('/', function (req, res) {
   promiseGetBooks()
     .then((books) => res.send({ books }))
     .catch((error) => res.status(404).json(error));
 });
 
-// Tarefa 11 - Promise: Obter detalhes do livro com base no ISBN
+/*
+Task 11.
+Add the code for getting the book details based on ISBN (done in Task 2)
+using Promise callbacks or async-await with Axios.
+*/
 public_users.get('/isbn/:isbn', function (req, res) {
   promiseGetBook(req.params.isbn)
     .then((book) => res.send(JSON.stringify(book, null, 4)))
     .catch((error) => res.status(404).json(error));
 });
 
-// Tarefa 12 - Promise: Obter detalhes do livro com base no autor
+/*
+Task 12.
+Add the code for getting the book details based on Author (done in Task 3)
+using Promise callbacks or async-await with Axios.
+*/
 public_users.get('/author/:author', function (req, res) {
   promiseGetBooksByAuthor(req.params.author)
     .then((books) => res.send(JSON.stringify(books, null, 4)))
     .catch((error) => res.status(404).json(error));
 });
 
-// Tarefa 13 - Promise: Obter todos os livros com base no título
+/*
+Task 13.
+Add the code for getting the book details based on Title (done in Task 4)
+using Promise callbacks or async-await with Axios.
+*/
 public_users.get('/title/:title', function (req, res) {
   promiseGetBooksByTitle(req.params.title)
     .then((books) => res.send(JSON.stringify(books, null, 4)))
     .catch((error) => res.status(404).json(error));
 });
 
-// Tarefa 5: Obter a revisão do livro
+// Task 5: Complete the code for getting book reviews
 public_users.get('/review/:isbn', function (req, res) {
   const isbn = req.params.isbn;
   const book = books[isbn];
